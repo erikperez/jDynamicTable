@@ -21,7 +21,7 @@
 
                     ],
 
-            caption: 'TestTable',
+            caption: "TestTable",
             style: true,
             hidden: false,
             sourceType: "array",
@@ -40,13 +40,18 @@
         _createStructure: function() {
             // internal functions should be named with a leading underscore
             // manipulate the widget
-
-            this.element.append('<h3 class="ui-accordion-header ui-helper-reset ui-state-default ui-corner-top" style="line-height:20px;width:300px;height:22px;padding-left:20px;">' + this.options.caption + '</h1>');
+            var upperHeader ="";
+            
+            upperHeader += '<h3 class="upperheader ui-accordion-header ui-helper-reset ui-state-default ui-corner-top">';
+            upperHeader += this.options.caption;
+            upperHeader += '</h3>';
+            this.element.append(upperHeader);
 
             this.element.append('<table id="myTable" class=" ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active" style="width:322px;" cellspacing="0" cellspacing="0">' +
-                    '' + this._createHeader());
+                    '');
 
-
+            this.element.append(this._createHeader());
+            this.element.append(this._createBody());
             this.element.append('</table>');
 
 
@@ -57,18 +62,11 @@
 
             for (var i = 0; i < this.options.columns.length; i++) {
                 tableHeaderData += '<th>' + this.options.columns[i] + '</th>';
-
             }
 
 
             var header = '<thead> <tr>' + tableHeaderData + '</tr> </thead>';
-
-
-            console.log(this._createBody());
-
-            header += this._createBody();
-
-            console.log(header);
+            
             return header;
         }
 
