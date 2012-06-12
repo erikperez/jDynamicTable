@@ -32,7 +32,6 @@
             // creation code for mywidget
             // can use this.options
             if (this.options.hidden) {
-                // and this.element
                 this.element.hide();
             }
             this._createStructure()
@@ -40,43 +39,40 @@
         _createStructure: function() {
             // internal functions should be named with a leading underscore
             // manipulate the widget
-            var upperHeader ="";
+
+            var $h3 = $("<h3 />");
+            $h3.addClass("upperheader ui-accordion-header ui-helper-reset ui-state-default ui-corner-top");
+            $h3.text(this.options.caption);
+
+            this.element.append($h3);
+
+            var $table = $("<table />");
+            $table.addClass("fullsize ui-widget-content");
+            $table.attr('id', 'myTable');
+            //$table.attr('cellpadding', 0);
+            $table.attr('cellspacing', 0);
             
-            upperHeader += '<h3 class="upperheader ui-accordion-header ui-helper-reset ui-state-default ui-corner-top">';
-            upperHeader += this.options.caption;
-            upperHeader += '</h3>';
-            this.element.append(upperHeader);
-
-            this.element.append('<table id="myTable" class=" ui-accordion-content ui-helper-reset ui-widget-content ui-corner-bottom ui-accordion-content-active" style="width:322px;" cellspacing="0" cellspacing="0">' +
-                    '');
-
-            this.element.append(this._createHeader());
-            this.element.append(this._createBody());
-            this.element.append('</table>');
-
+            $tableHeader = this._createHeader();
+            $tableBody = this._createBody();
+            $table.append($tableHeader);
+            $table.append($tableBody);
+            this.element.append($table); 
 
         },
-
         _createHeader: function() {
             var tableHeaderData = '';
 
             for (var i = 0; i < this.options.columns.length; i++) {
                 tableHeaderData += '<th>' + this.options.columns[i] + '</th>';
             }
-
-
+            
             var header = '<thead> <tr>' + tableHeaderData + '</tr> </thead>';
             
             return header;
         }
 
         ,
-
         _createBody: function() {
-
-
-            console.log("columnData 0 length: " + this.options.columnData[0].length);
-
             var tableBodyData = "";
             var oddOrEven = "odd";
 
@@ -86,30 +82,23 @@
             if (this.options.sourceType == "array") {
 
                 for (var j = 0; j < this.options.columnData.length; j++) {
-
-                    console.log(tableBodyData + j);
-
                     if (j % 2 == 0)
                         tableBodyData += '<tr class="odd">';
                     else
                         tableBodyData += '<tr class="even">';
-
                     for (var i = 0; i < this.options.columnData[j].length; i++)
                         tableBodyData += '<td>' + this.options.columnData[j][i] + '</td>';
-
 
                     tableBodyData += '</tr>';
 
 
                 }
 
-
                 var header = '<tbody>' + tableBodyData + '</tbody>';
-
 
                 return header;
             }
-            else if(this.options.sourceType == "json"){
+            else if(this.options.sourceType === "json"){
 
                 if(this.options.sourceUrl != '')
                 console.log("u need to set the url");
