@@ -32,6 +32,7 @@
                 this.element.hide();
             }
 
+            //Add styles
             appendStyle(self, "height:"+this.options.height);
             appendStyle(self, "width:"+this.options.width);
 
@@ -46,18 +47,34 @@
 
             
             $topDiv = $("<div />");
+            $topDiv.attr("id", "caption");
             $topDiv.addClass("ui-accordion-header ui-accordion-header ui-helper-reset ui-state-default ui-corner-top");
             
-            var $h3 = $("<h3 />");
-            $h3.text(this.options.caption);
-            $topDiv.append($h3);
+            var $leftTopSpan = $("<span />");
 
-            $outerDiv.append($topDiv);
+            var $h3 = $("<div />");
+
+            $leftTopSpan.addClass("icon-span ui-icon ui-icon-plus");
+            $leftTopSpan.hover(function(){
+                var h = $(this);
+                if(h.hasClass("ui-state-hover"))
+                {
+                    h.removeClass("ui-state-hover");
+                    return;
+                }
+                h.addClass("ui-state-hover");
+            });
+
+            
+            $h3.text(this.options.caption);
+            $topDiv.append($leftTopSpan);
+            $topDiv.append($h3);
+   
+            $outerDiv.append($topDiv);      
 
             var $table = $("<table />");
             $table.addClass("fullsize");
             $table.attr('id', 'myTable');
-            //$table.attr('cellpadding', 0);
             $table.attr('cellspacing', 0);
             
             $tableHeader = this._createHeader();
@@ -66,19 +83,23 @@
             $table.append($tableBody);
             
             $outerDiv.append($table);
-            this.element.append($outerDiv); 
+            self.append($outerDiv); 
+
+            $leftTopSpan.click(function(){
+                $("table.fullsize").toggle("blind");
+            });
 
         },
         _createHeader: function() {
-            var tableHeaderData = '';
+            var $tableHeader = $("<thead />");
+            var $tableRow = $("<tr />");
 
-            for (var i = 0; i < this.options.columns.length; i++) {
-                tableHeaderData += '<th>' + this.options.columns[i] + '</th>';
-            }
-            
-            var header = '<thead> <tr>' + tableHeaderData + '</tr> </thead>';
-            
-            return header;
+            for (var column in this.options.columns) 
+                $tableRow.append($("<th />").text(column));
+          
+            $tableHeader.append($tableRow);
+
+            return $tableHeader;
         }
 
         ,
@@ -86,48 +107,46 @@
             var tableBodyData = "";
             var oddOrEven = "odd";
 
-            if(this.options.sourceType == "json")
+            var $tableBody = $("<tbody />");
+
+
+            if(this.options.sourceType === "json")
                 return this._populateFromJson();
 
             if (this.options.sourceType == "array") {
 
                 for (var j = 0; j < this.options.columnData.length; j++) {
-                    if (j % 2 == 0)
-                        tableBodyData += '<tr class="odd">';
-                    else
-                        tableBodyData += '<tr class="even">';
-                    for (var i = 0; i < this.options.columnData[j].length; i++)
-                        tableBodyData += '<td>' + this.options.columnData[j][i] + '</td>';
-
-                    tableBodyData += '</tr>';
-
-
+                    var $tableRow = $("<tr />");
+                        j % 2 == 2 ? $tableRow.addClass("odd") : $tableRow.addClass("even");
+                    for (var i = 0; i < this.options.columnData[j].length; i++){                        
+                        $tableRow.append($("<td />").text(this.options.columnData[j][i]));
+                     }
+                   $tableBody.append($tableRow);
                 }
 
-                var header = '<tbody>' + tableBodyData + '</tbody>';
-
-                return header;
+                return $tableBody;
             }
             else if(this.options.sourceType === "json"){
 
-                if(this.options.sourceUrl != '')
-                console.log("u need to set the url");
-
-            }
-        }
-        /*,
-        _populateFromJson: function(){
-            $.ajax(function(e){
-                data: "test",
-                dataType: "json",
-                url: this.options.sourceUrl,
-                success: function(data){
-
+                if(this.options.sourceUrl !== '')
+                {
 
                 }
+            }
+        }
+        ,
+        _populateFromJson: function(){
+            if(sourceType !== self.options.sourceType)
+                return;
 
-        })}
-    */
+           $.ajax({
+                  url: "test.html",
+                  context: document.body
+                }).done(function() { 
+                  $(this).addClass("done");
+                });
+          }
+    
     });
 
     function appendStyle(element, style){

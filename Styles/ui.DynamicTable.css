@@ -15,4 +15,15 @@
 	padding: 10px;
 }
 
+.icon-span{
+	float:left;
+	margin-left:5px;
+}
+#caption div{
+display: inline;
+padding-left: 10px;
+font-size: 14px !important;
+font-weight: 800;
+}
+
 
