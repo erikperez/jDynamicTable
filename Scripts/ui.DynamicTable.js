@@ -1,12 +1,5 @@
-/**
- * Created by IntelliJ IDEA.
- * User: Diabl0
- * Date: Jul 29, 2010
- * Time: 11:52:06 PM
- * To change this template use File | Settings | File Templates.
- */
 (function($, undefined) {
-
+    var self = null;
     $.widget("ui.dynamictable", {
         // default options
         options: {
@@ -25,29 +18,44 @@
             style: true,
             hidden: false,
             sourceType: "array",
-            sourceUrl: "http://localhost/json/"
+            sourceUrl: "http://localhost/json/",
+            width:"400px",
+            height:"200px"
 
         },
         _create: function() {
             // creation code for mywidget
             // can use this.options
+            self = this.element;
+
             if (this.options.hidden) {
                 this.element.hide();
             }
+
+            appendStyle(self, "height:"+this.options.height);
+            appendStyle(self, "width:"+this.options.width);
+
+
             this._createStructure()
         },
         _createStructure: function() {
             // internal functions should be named with a leading underscore
             // manipulate the widget
+            var $outerDiv = $("<div />");
+            $outerDiv.addClass('outerDiv');
 
+            
+            $topDiv = $("<div />");
+            $topDiv.addClass("ui-accordion-header ui-accordion-header ui-helper-reset ui-state-default ui-corner-top");
+            
             var $h3 = $("<h3 />");
-            $h3.addClass("upperheader ui-accordion-header ui-helper-reset ui-state-default ui-corner-top");
             $h3.text(this.options.caption);
+            $topDiv.append($h3);
 
-            this.element.append($h3);
+            $outerDiv.append($topDiv);
 
             var $table = $("<table />");
-            $table.addClass("fullsize ui-widget-content");
+            $table.addClass("fullsize");
             $table.attr('id', 'myTable');
             //$table.attr('cellpadding', 0);
             $table.attr('cellspacing', 0);
@@ -56,7 +64,9 @@
             $tableBody = this._createBody();
             $table.append($tableHeader);
             $table.append($tableBody);
-            this.element.append($table); 
+            
+            $outerDiv.append($table);
+            this.element.append($outerDiv); 
 
         },
         _createHeader: function() {
@@ -120,5 +130,16 @@
     */
     });
 
-
+    function appendStyle(element, style){
+        var existingStyle = element.attr('style');
+        if(existingStyle === undefined){
+            existingStyle = "";
+        }
+        if(existingStyle.length > 0 && existingStyle.charAt(existingStyle.length) !== ";")
+            existingStyle += ";";
+        
+        existingStyle += style;
+        element.attr('style', existingStyle);
+    };
+    
 })(jQuery);

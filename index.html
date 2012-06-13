@@ -3,24 +3,11 @@
 <html>
 <head>
     <title></title>
-    <script type="text/javascript" src="Scripts/jquery-1.4.2.min.js"></script>
-    <script type="text/javascript" src="Scripts/jquery-ui-1.8.2.custom.min.js"></script>
-    <script type="text/javascript" src="Scripts/ui.DynamicTable.js"></script>
+   
     <link rel="stylesheet" href="Styles/cleangreen/jquery-ui-1.8.2.custom.css"/>   
     <link rel="stylesheet" href="Styles/ui.DynamicTable.css" media="all" />
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-
-            $("#test").dynamictable(function() {
-                options: {
-                    caption: "test"
-                }
-            });
-
-        });
-
-    </script>
+ 
     <style type="text/css">
         body {
             font: 62.5% "Trebuchet MS", sans-serif;
@@ -28,7 +15,22 @@
     </style>
 </head>
 <body>
+ <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+ <script type="text/javascript" src=" https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.21/jquery-ui.min.js"></script>
+ <script type="text/javascript" src="Scripts/ui.DynamicTable.js"></script>
+ <script type="text/javascript">
+        $(document).ready(function () {
 
+         $("#test").dynamictable({
+                caption: "test",
+                
+               });
+         
+
+
+        });
+
+    </script>
 <div id="top_wrapper">
 <div id="top_header"></div>
 
