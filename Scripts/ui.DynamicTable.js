@@ -1,5 +1,5 @@
 (function($, undefined) {
-    var self = null;
+    var me = null;
     $.widget("ui.dynamictable", {
         // default options
         options: {
@@ -20,24 +20,33 @@
             sourceType: "array",
             sourceUrl: "http://localhost/json/",
             width:"400px",
-            height:"200px"
+            height:"200px",
+            callbacks: {
+                sort: function(){},
+
+
+            },
+            icon: "ui-icon-plus",
+            
 
         },
         _create: function() {
             // creation code for mywidget
             // can use this.options
-            self = this.element;
+            me = this.element;
 
             if (this.options.hidden) {
-                this.element.hide();
+                me.hide();
             }
 
-            //Add styles
-            appendStyle(self, "height:"+this.options.height);
-            appendStyle(self, "width:"+this.options.width);
+            //Add main styles
+            appendStyle(me, "height:"+this.options.height);
+            appendStyle(me, "width:"+this.options.width);
 
+            //build elements
+            this._createStructure();
+            this._sort(function(){console.log("omg2")});
 
-            this._createStructure()
         },
         _createStructure: function() {
             // internal functions should be named with a leading underscore
@@ -83,7 +92,7 @@
             $table.append($tableBody);
             
             $outerDiv.append($table);
-            self.append($outerDiv); 
+            me.append($outerDiv); 
 
             $leftTopSpan.click(function(){
                 $("table.fullsize").toggle("blind");
@@ -104,11 +113,7 @@
 
         ,
         _createBody: function() {
-            var tableBodyData = "";
-            var oddOrEven = "odd";
-
             var $tableBody = $("<tbody />");
-
 
             if(this.options.sourceType === "json")
                 return this._populateFromJson();
@@ -136,7 +141,7 @@
         }
         ,
         _populateFromJson: function(){
-            if(sourceType !== self.options.sourceType)
+            if(sourceType !== me.options.sourceType)
                 return;
 
            $.ajax({
@@ -145,7 +150,10 @@
                 }).done(function() { 
                   $(this).addClass("done");
                 });
-          }
+          },
+        _sort : function(x){
+            x();
+        }
     
     });
 
